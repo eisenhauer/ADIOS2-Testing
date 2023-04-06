@@ -1,0 +1,5 @@
+N1.openpmd_encoding = v
+N1.adios2_engine.type=bp5
+N1.adios2_engine.parameters.BufferChunkSize=2147381248
+N1.adios2_engine.parameters.StatsLevel=0
+N1.adios2_engine.parameters.AggregatorRatio=8

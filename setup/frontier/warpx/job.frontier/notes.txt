@@ -1,0 +1,9 @@
+WarpX compilation instructions & run templates are here:
+  https://warpx.readthedocs.io/en/latest/install/hpc/frontier.html
+
+Junmin's inputs look good - for weak-scaling please increase the input parameter
+  amr.n_cell =  512 512 512
+proportionally to your baseline.
+
+Per GPU, aim to have 128x256x256 or if it fits 256x256x256 cells.
+
