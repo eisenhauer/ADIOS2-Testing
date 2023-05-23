@@ -1,0 +1,72 @@
+<?xml version="1.0" ?>
+<adios-config>
+    <io name="f0">
+        <engine type="NULL"/>
+    </io>
+    <io name="field3D">
+        <engine type="NULL"/>
+    </io>
+    <io name="restart">
+        <engine type="BP5">
+            <parameter key="AggregationType" value="TwoLevelShm"/>
+            <parameter key="AggregatorRatio" value="8"/>
+            <parameter key="StatsLevel" value="0"/>
+            <parameter key="BufferChunkSize" value="2147381248"/>
+        </engine>
+    </io>
+    <io name="restartf0">
+        <engine type="BP5">
+            <parameter key="AggregationType" value="TwoLevelShm"/>
+            <parameter key="AggregatorRatio" value="8"/>
+            <parameter key="StatsLevel" value="0"/>
+            <parameter key="BufferChunkSize" value="2147381248"/>
+        </engine>
+    </io>
+    <io name="restart_mvr">
+        <engine type="BP5">
+            <parameter key="AggregationType" value="TwoLevelShm"/>
+            <parameter key="AggregatorRatio" value="8"/>
+            <parameter key="StatsLevel" value="0"/>
+            <parameter key="BufferChunkSize" value="2147381248"/>
+        </engine>
+    </io>
+    <io name="diagnosis.1d">
+        <engine type="NULL"/>
+    </io>
+    <io name="diagnosis.heat">
+        <engine type="NULL"/>
+    </io>
+    <io name="diagnosis.heat2">
+        <engine type="NULL"/>
+    </io>
+    <io name="diagnosis.sheath">
+        <engine type="NULL"/>
+    </io>
+    <io name="f3d">
+        <engine type="NULL"/>
+    </io>
+    <io name="fort.tracer">
+        <engine type="NULL"/>
+    </io>
+    <io name="diagnosis.neutrals">
+        <engine type="NULL"/>
+    </io>
+    <io name="particle">
+        <engine type="NULL"/>
+    </io>
+    <io name="rmp">
+        <engine type="NULL"/>
+    </io>
+    <io name="diagnosis.fsource">
+        <engine type="NULL"/>
+    </io>
+    <io name="diagnosis.mesh">
+        <engine type="NULL"/>
+    </io>
+    <io name="diagnosis.f0.mesh">
+        <engine type="NULL"/>
+    </io>
+    <io name="diagnosis.bfield">
+        <engine type="NULL"/>
+    </io>
+</adios-config>

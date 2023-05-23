@@ -1,0 +1,217 @@
+&sml_param
+sml_f0_grid = .true.
+sml_node_file='ITER_15MA_Jan_23_multi.node'
+sml_ele_file='ITER_15MA_Jan_23_multi.ele'
+sml_surf_file='ITER_15MA_Jan_23_multi.flx.aif'
+sml_bp_sign=1.D0
+sml_bt_sign=-1.D0
+sml_pol_decomp=.true.
+sml_special=0             ! 0: normal simulation, 1: single particle simulation
+sml_en_order_kev=15.0D0
+sml_dt=2.0D-4             ! delta-t for one time step - unit of toroidal transit time.
+sml_mstep = 1
+sml_deltaf=.true.         ! delta-f simulation switch - incomplete
+sml_electron_on=.true.
+sml_nphi_total = 64
+sml_wedge_n=2
+sml_bounce=0              ! Particle motion boundary condition 
+                          ! 1 for edge simulation (including open field line region)
+                          ! 2 for core simulation (excluding open field line region)
+sml_bounce_zero_weight=0
+sml_bounce_buffer=0.05D0
+sml_ff_order=4
+sml_ff_step=2
+sml_inpsi=0.00            ! inner boundary of simulation - unit of eq_x_psi
+sml_outpsi=1.1            ! outer boundary of simulation - unit of eq_x_psi
+sml_dwdt_exb_only=.true.
+sml_restart_write_period = 100
+sml_restart=.true.
+sml_initial_deltaf_noise=1.0D-9
+sml_deltaf_f0_mode=-2
+sml_zero_inner_bd=.true.
+
+sml_guess_table_size=1200
+sml_input_file_dir='XGC-input/'
+sml_bd_ext_delta1=-0.01
+sml_bd_ext_delta1H=0.10
+sml_bd_ext_delta2=-0.01
+sml_bd_ext_delta2H=0.10
+sml_bd_ext_delta3=0.10
+sml_bd_ext_delta3H=0.10
+sml_bd_ext_delta4=0.10
+sml_bd_ext_delta4H=0.10
+sml_bd_ext_delta_ji=0.10
+sml_bd_ext_delta_jo=0.10
+sml_bd_ext_delta_Ai=0.10
+sml_bd_ext_delta_Ao=0.10
+
+sml_sheath_mode=0
+sml_sheath_adjust=.false.
+sml_sheath_init_pot_factor=2.0D0
+sml_turb_efield=.true.
+sml_00_efield=.true.
+
+sml_mode_select_mode=5
+sml_mode_select_n=1
+
+sml_mode_select_mmin=3
+sml_mode_select_nmin=1
+sml_mode_select_nmax = 1
+sml_mode_select_mres_q=1
+
+sml_mode_select_cutoff=8
+sml_mode_select_inpsi=-0.13D0
+sml_mode_select_outpsi=1.0D0
+sml_mode_select_bd_width=0.02D0
+
+sml_mode_select_bands_on=.true.
+sml_mode_select_nmin_real=8
+sml_mode_select_nmax_real=96
+sml_mode_select_num_m_damp=0
+sml_mode_select_damp_width=1.5
+sml_mode_select_cutoff=4
+sml_mode_select_bands_on=.true.
+sml_em_dAsdt_filter_on=.true.
+sml_mode_select_no_m0=.true.
+sml_mode_select_use_minm=.true.
+sml_em_n0=.false.
+
+sml_rhomax=1.3D-2
+sml_grid_nrho=8
+sml_ncycle_half=8
+sml_poisson_solver_type=0
+sml_iter_solver=.true.
+sml_iter_solver_niter=2
+sml_00_npsi=1000
+sml_exclude_private=.true.
+sml_multirate_timestepping=.true.
+sml_bd_ext_delta_in_simple00=.true.
+
+sml_flat_marker=.true.
+sml_flat_marker_cutoff1=4.D0
+sml_flat_marker_decay_start1=3.9D0
+sml_flat_marker_width1=0.05D0
+sml_flat_marker_decay_start2=3.9D0
+sml_use_loading_factor=.false.
+sml_limit_marker_den=.false.
+sml_min_loading_factor=0.05D0
+sml_max_loading_factor=20D0
+
+sml_monte_num=5000000
+sml_grad_psitheta=.true.
+sml_node_vol_monte=.false.
+sml_em_mixed_variable=.true.
+sml_em_pullback_mode=4
+sml_em_control_variate=.false.
+/
+
+&mr_param
+! multirate timestepping related parameters
+mr_factor1 = 1
+mr_factor2 = 1
+mr_factor3 = 1
+mr_factor4 = 1
+mr_factor5 = 1
+mr_psi_max1 = 0.1
+mr_psi_max2 = 0.3
+mr_psi_max3 = 0.5
+mr_psi_max4 = 0.7
+mr_psi_max5 = 0.8
+/
+
+&ptl_param
+ptl_mass_au=2D0         ! 1 for hydrogen, 2 for deutron
+ptl_e_mass_au=5.454D-4  ! Electron mass relative to proton mass
+ptl_charge_eu=1D0       ! ion charge
+ptl_num = 2012000
+ptl_maxnum = 4024000
+/
+
+&eq_param ! Initial equilibrium profile - Tanh profile
+eq_filename='iter_JINTRAC_15MA_smooth5.eqd'
+eq_den_shape=-1
+eq_den_file='den_ITER_smoothed.prf'
+eq_den_x1=0.975D0      ! pedestal center 
+eq_den_x2=0.05D0    ! pedestal width
+eq_den_x3=0D0
+eq_den_v1=4.0D19          ! inside value of density m^-3
+eq_den_v2=0.2D19           ! outside value of density  m^-3
+eq_den_v3=0.00
+
+eq_tempi_shape=-1
+eq_tempe_shape=-1
+eq_tempi_file='tempi_ITER_smoothed.prf'
+eq_tempe_file='tempe_ITER_smoothed.prf'
+eq_tempi_x1=0.97D0
+eq_tempe_x1=0.97D0
+eq_tempi_x2=0.07D0
+eq_tempe_x2=0.07D0
+eq_tempi_x3=0D0
+eq_tempe_x3=0D0
+eq_tempi_v1=1D3      ! ion temperature (inside) - eV
+eq_tempe_v1=1D3
+eq_tempi_v2=1d2     ! ion temperature (outside) - eV
+eq_tempe_v2=1D2
+eq_tempi_v3=1.2D3
+eq_tempe_v3=1.2D3
+/
+
+&col_param  ! Collision
+col_mode=0  ! 0 : off , 1 monte-carlo (non-conserving) 2: monte-carlo (conserving)
+/
+
+&diag_param
+diag_rmp_period = 100
+diag_particle_period = 100
+diag_neutral_period = 100
+diag_f0_df_period = 100
+diag_f0_df_on = .true.
+diag_1d_period = 100
+diag_f0_period = 100
+diag_tracer_period = 100
+diag_3d_on=.true.
+diag_3d_period = 100
+diag_f3d_period = 100
+/
+
+&neu_param            ! neutral collision
+neu_col_mode=0
+/
+
+&src_param
+/
+
+&f0_param
+f0_nvp = 18
+f0_nmu = 32
+/
+
+&smooth_param
+smooth_pol_efield=.false.
+smooth_rad_efield=.false.
+smooth_fourier_filt_on=.false.
+/
+
+&mon_param
+/
+&adios_param
+adios_stage_3d = .true.
+adios_stage_f0 = .true.
+adios_stage_f0_max = 10000
+/
+&ptb_3db_param
+/
+&coupling_param
+/
+&cce_phicoupling
+/
+&cce_fcoupling
+/
+&cce_surfaces
+/
+
+&init_cond
+/
+
+&diff_param
+/
