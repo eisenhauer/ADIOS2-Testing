@@ -1,0 +1,6 @@
+        <engine type="BP5">
+            <parameter key="AggregationType" value="EveryoneWrites"/>
+            <parameter key="AggregatorRatio" value="1"/>
+            <parameter key="StatsLevel" value="0"/>
+            <parameter key="BufferChunkSize" value="2147381248"/>
+        </engine>

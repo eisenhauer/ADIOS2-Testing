@@ -1,0 +1,5 @@
+        <engine type="BP5">
+            <parameter key="AggregationType" value="EveryoneWritesSerial"/>
+            <parameter key="StatsLevel" value="0"/>
+            <parameter key="BufferChunkSize" value="2147381248"/>
+        </engine>
