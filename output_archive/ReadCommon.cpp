@@ -97,101 +97,99 @@ TEST_F(CommonReadTest, ADIOS2CommonRead1D8)
         size_t writerSize = 0;
 
         auto scalar_r64 = io.InquireVariable<double>("scalar_r64");
-	EXPECT_TRUE(scalar_r64);
+        EXPECT_TRUE(scalar_r64);
         auto var_time = io.InquireVariable<int64_t>("time");
-	EXPECT_TRUE(var_time);
-	//            ASSERT_EQ(var_time.ShapeID(), adios2::ShapeID::GlobalArray);
-	writerSize = var_time.Shape()[0];
+        EXPECT_TRUE(var_time);
+        //            ASSERT_EQ(var_time.ShapeID(), adios2::ShapeID::GlobalArray);
+        writerSize = var_time.Shape()[0];
 
         auto var_i8 = io.InquireVariable<int8_t>("i8");
-	EXPECT_TRUE(var_i8);
-	//            ASSERT_EQ(var_i8.ShapeID(), adios2::ShapeID::GlobalArray);
-	/* take the first size as something that gives us writer size */
-	Nx = var_i8.Shape()[0] / writerSize;
+        EXPECT_TRUE(var_i8);
+        //            ASSERT_EQ(var_i8.ShapeID(), adios2::ShapeID::GlobalArray);
+        /* take the first size as something that gives us writer size */
+        Nx = var_i8.Shape()[0] / writerSize;
 
         auto var_i16 = io.InquireVariable<int16_t>("i16");
-	EXPECT_TRUE(var_i16);
-	//            ASSERT_EQ(var_i16.ShapeID(), adios2::ShapeID::GlobalArray);
-	ASSERT_EQ(var_i16.Shape()[0], writerSize * Nx);
+        EXPECT_TRUE(var_i16);
+        //            ASSERT_EQ(var_i16.ShapeID(), adios2::ShapeID::GlobalArray);
+        ASSERT_EQ(var_i16.Shape()[0], writerSize * Nx);
 
         auto var_i32 = io.InquireVariable<int32_t>("i32");
-	EXPECT_TRUE(var_i32);
-	//            ASSERT_EQ(var_i32.ShapeID(), adios2::ShapeID::GlobalArray);
-	ASSERT_EQ(var_i32.Shape()[0], writerSize * Nx);
+        EXPECT_TRUE(var_i32);
+        //            ASSERT_EQ(var_i32.ShapeID(), adios2::ShapeID::GlobalArray);
+        ASSERT_EQ(var_i32.Shape()[0], writerSize * Nx);
 
         auto var_i64 = io.InquireVariable<int64_t>("i64");
-	EXPECT_TRUE(var_i64);
-	//            ASSERT_EQ(var_i64.ShapeID(), adios2::ShapeID::GlobalArray);
-	ASSERT_EQ(var_i64.Shape()[0], writerSize * Nx);
+        EXPECT_TRUE(var_i64);
+        //            ASSERT_EQ(var_i64.ShapeID(), adios2::ShapeID::GlobalArray);
+        ASSERT_EQ(var_i64.Shape()[0], writerSize * Nx);
 
         auto var_r32 = io.InquireVariable<float>("r32");
-	EXPECT_TRUE(var_r32);
-	//            ASSERT_EQ(var_r32.ShapeID(), adios2::ShapeID::GlobalArray);
-	ASSERT_EQ(var_r32.Shape()[0], writerSize * Nx);
+        EXPECT_TRUE(var_r32);
+        //            ASSERT_EQ(var_r32.ShapeID(), adios2::ShapeID::GlobalArray);
+        ASSERT_EQ(var_r32.Shape()[0], writerSize * Nx);
 
         auto var_r64 = io.InquireVariable<double>("r64");
-	EXPECT_TRUE(var_r64);
-	//            ASSERT_EQ(var_r64.ShapeID(), adios2::ShapeID::GlobalArray);
-	ASSERT_EQ(var_r64.Shape()[0], writerSize * Nx);
-
+        EXPECT_TRUE(var_r64);
+        //            ASSERT_EQ(var_r64.ShapeID(), adios2::ShapeID::GlobalArray);
+        ASSERT_EQ(var_r64.Shape()[0], writerSize * Nx);
 
         auto var_c32 = io.InquireVariable<std::complex<float>>("c32");
         auto var_c64 = io.InquireVariable<std::complex<double>>("c64");
         auto var_r64_2d = io.InquireVariable<double>("r64_2d");
         auto var_r64_2d_rev = io.InquireVariable<double>("r64_2d_rev");
-            EXPECT_TRUE(var_c32);
-	    //            ASSERT_EQ(var_c32.ShapeID(), adios2::ShapeID::GlobalArray);
-            ASSERT_EQ(var_c32.Shape()[0], writerSize * Nx);
+        EXPECT_TRUE(var_c32);
+        //            ASSERT_EQ(var_c32.ShapeID(), adios2::ShapeID::GlobalArray);
+        ASSERT_EQ(var_c32.Shape()[0], writerSize * Nx);
 
-            EXPECT_TRUE(var_c64);
-	    //            ASSERT_EQ(var_c64.ShapeID(), adios2::ShapeID::GlobalArray);
-            ASSERT_EQ(var_c64.Shape()[0], writerSize * Nx);
+        EXPECT_TRUE(var_c64);
+        //            ASSERT_EQ(var_c64.ShapeID(), adios2::ShapeID::GlobalArray);
+        ASSERT_EQ(var_c64.Shape()[0], writerSize * Nx);
 
-            EXPECT_TRUE(var_r64_2d);
-	    //            ASSERT_EQ(var_r64_2d.ShapeID(), adios2::ShapeID::GlobalArray);
-            ASSERT_EQ(var_r64_2d.Shape()[0], writerSize * Nx);
-            ASSERT_EQ(var_r64_2d.Shape()[1], 2);
+        EXPECT_TRUE(var_r64_2d);
+        //            ASSERT_EQ(var_r64_2d.ShapeID(), adios2::ShapeID::GlobalArray);
+        ASSERT_EQ(var_r64_2d.Shape()[0], writerSize * Nx);
+        ASSERT_EQ(var_r64_2d.Shape()[1], 2);
 
-            EXPECT_TRUE(var_r64_2d_rev);
-	    //            ASSERT_EQ(var_r64_2d_rev.ShapeID(), adios2::ShapeID::GlobalArray);
-            ASSERT_EQ(var_r64_2d_rev.Shape()[0], 2);
-            ASSERT_EQ(var_r64_2d_rev.Shape()[1], writerSize * Nx);
+        EXPECT_TRUE(var_r64_2d_rev);
+        //            ASSERT_EQ(var_r64_2d_rev.ShapeID(), adios2::ShapeID::GlobalArray);
+        ASSERT_EQ(var_r64_2d_rev.Shape()[0], 2);
+        ASSERT_EQ(var_r64_2d_rev.Shape()[1], writerSize * Nx);
 
-            const std::vector<adios2::Variable<int8_t>::Info> i8Info =
-                engine.BlocksInfo(var_i8, engine.CurrentStep());
-            const std::vector<adios2::Variable<int16_t>::Info> i16Info =
-                engine.BlocksInfo(var_i16, engine.CurrentStep());
-            const std::vector<adios2::Variable<int32_t>::Info> i32Info =
-                engine.BlocksInfo(var_i32, engine.CurrentStep());
-            const std::vector<adios2::Variable<int64_t>::Info> i64Info =
-                engine.BlocksInfo(var_i64, engine.CurrentStep());
-            const std::vector<adios2::Variable<float>::Info> r32Info =
-                engine.BlocksInfo(var_r32, engine.CurrentStep());
-            const std::vector<adios2::Variable<double>::Info> r64Info =
-                engine.BlocksInfo(var_r64, engine.CurrentStep());
-            EXPECT_EQ(i8Info.size(), writerSize);
-            EXPECT_EQ(i16Info.size(), writerSize);
-            EXPECT_TRUE((i32Info.size() == writerSize) ||
-                        (i32Info.size() == writerSize * 3));
-            EXPECT_EQ(i64Info.size(), writerSize);
-            EXPECT_EQ(r32Info.size(), writerSize);
-            EXPECT_EQ(r64Info.size(), writerSize);
-            for (size_t i = 0; i < writerSize; ++i)
-            {
-                EXPECT_FALSE(i8Info[0].IsValue);
-                EXPECT_FALSE(i16Info[0].IsValue);
-                EXPECT_FALSE(i32Info[0].IsValue);
-                EXPECT_FALSE(i64Info[0].IsValue);
-                EXPECT_FALSE(r32Info[0].IsValue);
-                EXPECT_FALSE(r64Info[0].IsValue);
-            }
+        const std::vector<adios2::Variable<int8_t>::Info> i8Info =
+            engine.BlocksInfo(var_i8, engine.CurrentStep());
+        const std::vector<adios2::Variable<int16_t>::Info> i16Info =
+            engine.BlocksInfo(var_i16, engine.CurrentStep());
+        const std::vector<adios2::Variable<int32_t>::Info> i32Info =
+            engine.BlocksInfo(var_i32, engine.CurrentStep());
+        const std::vector<adios2::Variable<int64_t>::Info> i64Info =
+            engine.BlocksInfo(var_i64, engine.CurrentStep());
+        const std::vector<adios2::Variable<float>::Info> r32Info =
+            engine.BlocksInfo(var_r32, engine.CurrentStep());
+        const std::vector<adios2::Variable<double>::Info> r64Info =
+            engine.BlocksInfo(var_r64, engine.CurrentStep());
+        EXPECT_EQ(i8Info.size(), writerSize);
+        EXPECT_EQ(i16Info.size(), writerSize);
+        EXPECT_TRUE((i32Info.size() == writerSize) || (i32Info.size() == writerSize * 3));
+        EXPECT_EQ(i64Info.size(), writerSize);
+        EXPECT_EQ(r32Info.size(), writerSize);
+        EXPECT_EQ(r64Info.size(), writerSize);
+        for (size_t i = 0; i < writerSize; ++i)
+        {
+            EXPECT_FALSE(i8Info[0].IsValue);
+            EXPECT_FALSE(i16Info[0].IsValue);
+            EXPECT_FALSE(i32Info[0].IsValue);
+            EXPECT_FALSE(i64Info[0].IsValue);
+            EXPECT_FALSE(r32Info[0].IsValue);
+            EXPECT_FALSE(r64Info[0].IsValue);
+        }
 
         if (var_c32)
         {
-            const std::vector<adios2::Variable<std::complex<float>>::Info>
-                c32Info = engine.BlocksInfo(var_c32, engine.CurrentStep());
-            const std::vector<adios2::Variable<std::complex<double>>::Info>
-                c64Info = engine.BlocksInfo(var_c64, engine.CurrentStep());
+            const std::vector<adios2::Variable<std::complex<float>>::Info> c32Info =
+                engine.BlocksInfo(var_c32, engine.CurrentStep());
+            const std::vector<adios2::Variable<std::complex<double>>::Info> c64Info =
+                engine.BlocksInfo(var_c64, engine.CurrentStep());
             EXPECT_EQ(c32Info.size(), writerSize);
             EXPECT_EQ(c64Info.size(), writerSize);
             for (size_t i = 0; i < writerSize; ++i)
@@ -201,10 +199,8 @@ TEST_F(CommonReadTest, ADIOS2CommonRead1D8)
             }
         }
 
-        long unsigned int myStart =
-            (long unsigned int)(writerSize * Nx / mpiSize) * mpiRank;
-        long unsigned int myLength =
-            (long unsigned int)((writerSize * Nx + mpiSize - 1) / mpiSize);
+        long unsigned int myStart = (long unsigned int)(writerSize * Nx / mpiSize) * mpiRank;
+        long unsigned int myLength = (long unsigned int)((writerSize * Nx + mpiSize - 1) / mpiSize);
 
         if (myStart + myLength > writerSize * Nx)
         {
@@ -265,8 +261,7 @@ TEST_F(CommonReadTest, ADIOS2CommonRead1D8)
                 engine.Get(var_r32, in_R32.data(), GlobalReadMode);
                 engine.Get(var_r64, in_R64.data(), GlobalReadMode);
                 if (!mpiRank)
-                    engine.Get(var_time, (int64_t *)&write_time,
-                               GlobalReadMode);
+                    engine.Get(var_time, (int64_t *)&write_time, GlobalReadMode);
             }
             if (var_c32)
                 engine.Get(var_c32, in_C32.data(), GlobalReadMode);
@@ -275,8 +270,7 @@ TEST_F(CommonReadTest, ADIOS2CommonRead1D8)
             if (var_r64_2d)
                 engine.Get(var_r64_2d, in_R64_2d.data(), GlobalReadMode);
             if (var_r64_2d_rev)
-                engine.Get(var_r64_2d_rev, in_R64_2d_rev.data(),
-                           GlobalReadMode);
+                engine.Get(var_r64_2d_rev, in_R64_2d_rev.data(), GlobalReadMode);
         }
         if (GlobalReadMode == adios2::Mode::Sync)
         {
@@ -284,8 +278,8 @@ TEST_F(CommonReadTest, ADIOS2CommonRead1D8)
             int result = validateCommonTestData(myStart, myLength, t, !var_c32);
             if (result != 0)
             {
-                std::cout << "Read Data Validation failed on node " << mpiRank
-                          << " timestep " << t << std::endl;
+                std::cout << "Read Data Validation failed on node " << mpiRank << " timestep " << t
+                          << std::endl;
             }
             EXPECT_EQ(result, 0);
         }
@@ -295,8 +289,8 @@ TEST_F(CommonReadTest, ADIOS2CommonRead1D8)
             int result = validateCommonTestData(myStart, myLength, t, !var_c32);
             if (result != 0)
             {
-                std::cout << "Read Data Validation failed on node " << mpiRank
-                          << " timestep " << t << std::endl;
+                std::cout << "Read Data Validation failed on node " << mpiRank << " timestep " << t
+                          << std::endl;
             }
             EXPECT_EQ(result, 0);
         }
@@ -330,8 +324,7 @@ static adios2::Params ParseEngineParams(std::string Input)
         std::getline(ss2, ParamName, '=');
         if (!std::getline(ss2, ParamValue, '='))
         {
-            throw std::invalid_argument("Engine parameter \"" + Param +
-                                        "\" missing value");
+            throw std::invalid_argument("Engine parameter \"" + Param + "\" missing value");
         }
         Ret[Trim(ParamName)] = Trim(ParamValue);
     }
@@ -355,8 +348,7 @@ void ParseArgs(int argc, char **argv)
         {
             std::istringstream ss(argv[2]);
             if (!(ss >> Nx))
-                std::cerr << "Invalid number for nx (base element count) "
-                          << argv[1] << '\n';
+                std::cerr << "Invalid number for nx (base element count) " << argv[1] << '\n';
             argv++;
             argc--;
         }
@@ -378,8 +370,7 @@ void ParseArgs(int argc, char **argv)
             }
             else
             {
-                std::cerr << "Invalid mode for --write_mode " << argv[2]
-                          << std::endl;
+                std::cerr << "Invalid mode for --write_mode " << argv[2] << std::endl;
             }
             argv++;
             argc--;
@@ -417,8 +408,7 @@ void ParseArgs(int argc, char **argv)
             else
             {
 
-                throw std::invalid_argument("Unknown argument \"" +
-                                            std::string(argv[1]) + "\"");
+                throw std::invalid_argument("Unknown argument \"" + std::string(argv[1]) + "\"");
             }
         }
         argv++;

@@ -10,6 +10,13 @@ include(CTest)
 set(BUILD_TESTING ON CACHE BOOL "" FORCE)
 enable_testing()
 
+#
+# For each test set <S>, we expect to find Write<S>.cpp and Read<S>.cpp as programs to be built.
+# We also expect in the zipped_output directory that all zip files with the prefix <S> are the compressed contents of bpfiles that can be read with Read<S>
+# Write<S>.cpp is expected to be use MPI and we'll try to create new files with mpirun -n 4 Write<S>
+# Read<S>.cpp should not require MPI, but should be GTest enabled, and we'll generate CTest entries for each zipped file.
+#
+SET (TestSets Attribute Common)
 
 find_package(ADIOS2 REQUIRED)
 set(ADIOS2_DEP adios2::adios2)
@@ -19,7 +26,7 @@ else()
   set(common_deps adios2::cxx11)
 endif()
 
-find_package(GTest)
+find_package(GTest 1.16)
 if( NOT GTest_FOUND )
   include(FetchContent)
   FetchContent_Declare(
@@ -36,43 +43,46 @@ find_package(MPI)
 
 ADD_EXECUTABLE(test_file_unique test_file_unique.c)
 
+foreach (TestSet ${TestSets})
 
-# Configuration  Engines to create new files with
-SET(NewFileEngineList bp4 bp5)
+    ADD_EXECUTABLE(Read${TestSet} Read${TestSet}.cpp)
+target_link_libraries(Read${TestSet} adios2::adios2 GTest::gtest_main)
+ADD_EXECUTABLE(Write${TestSet} Write${TestSet}.cpp)
+target_link_libraries(Write${TestSet} adios2::adios2 MPI::MPI_CXX   GTest::gtest_main)
 
 
-
-ADD_EXECUTABLE(ReadCommon ReadCommon.cpp)
-target_link_libraries(ReadCommon adios2::adios2 GTest::gtest_main)
-ADD_EXECUTABLE(WriteCommon WriteCommon.cpp)
-target_link_libraries(WriteCommon adios2::adios2 MPI::MPI_CXX   GTest::gtest_main)
-#ADD_EXECUTABLE(test_file_unique test_file_unique.c)
-
-FILE(GLOB CommonS ${CMAKE_SOURCE_DIR}/zipped_output/Common*.zip)
+FILE(GLOB ${TestSet}S ${CMAKE_SOURCE_DIR}/zipped_output/${TestSet}*.zip)
 set (OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/TempOutput")
 file(MAKE_DIRECTORY ${OUTPUT_DIRECTORY})
-LIST(REMOVE_DUPLICATES CommonS)
+LIST(REMOVE_DUPLICATES ${TestSet}S)
 
-foreach	(CommonOUT ${CommonS})
-    GET_FILENAME_COMPONENT(NO_ZIP ${CommonOUT} NAME_WLE)
-    GET_FILENAME_COMPONENT(DIR ${CommonOUT} DIRECTORY)
+foreach	(${TestSet}OUT ${${TestSet}S})
+    GET_FILENAME_COMPONENT(NO_ZIP ${${TestSet}OUT} NAME_WLE)
+    GET_FILENAME_COMPONENT(DIR ${${TestSet}OUT} DIRECTORY)
+    GET_FILENAME_COMPONENT(UNIQNAME ${NO_ZIP} NAME)
     GET_FILENAME_COMPONENT(BASENAME ${NO_ZIP} NAME_WLE)
     GET_FILENAME_COMPONENT(ENGINE_EXT ${NO_ZIP} LAST_EXT)
     STRING(REGEX REPLACE "^\\." "" ENGINE ${ENGINE_EXT})
     set (EXTRACTED_BPFILE "${OUTPUT_DIRECTORY}/${NO_ZIP}")
     file (MAKE_DIRECTORY ${EXTRACTED_BPFILE})
-    file(ARCHIVE_EXTRACT INPUT ${CommonOUT} DESTINATION ${EXTRACTED_BPFILE} VERBOSE)
-    ADD_TEST(NAME CommonOUT_${ENGINE}_${BASENAME} COMMAND ReadCommon ${EXTRACTED_BPFILE})
+    MESSAGE (STATUS "Setting up read test for file ${EXTRACTED_BPFILE}")
+    file(ARCHIVE_EXTRACT INPUT ${${TestSet}OUT} DESTINATION ${EXTRACTED_BPFILE})
+    ADD_TEST(NAME Reading${UNIQNAME} COMMAND Read${TestSet} ${EXTRACTED_BPFILE})
 endforeach()
 
+
+# Configuration  Engines to create new files with
+SET(NewFileEngineList bp5)
+
 foreach	(Engine ${NewFileEngineList})
-    MESSAGE (STATUS "output for engine ${Engine}")
+    MESSAGE (STATUS "output for engine ${Engine} and test set ${TestSet}")
     add_custom_target(
-	new_Common_${Engine}_OUTPUT ALL
-	COMMAND mpirun -n 4 WriteCommon ${Engine} ${CMAKE_BINARY_DIR}/TempOutput/CurrentCommon.${Engine}
-	COMMAND ${CMAKE_COMMAND} -DSOURCE_DIR=${CMAKE_BINARY_DIR}/TempOutput/CurrentCommon.${Engine} -DARCHIVE_NAME=${CMAKE_BINARY_DIR}/TempOutput/CurrentCommon.${Engine}.zip -P ${CMAKE_SOURCE_DIR}/create_archive.cmake
-	COMMAND test_file_unique ${CMAKE_BINARY_DIR}/TempOutput/CurrentCommon.${Engine}.zip ${CommonS}
-	BYPRODUCTS ${CURRENT_BINARY_DIR}/CurrentCommon.${Engine}.zip)
-    add_dependencies(new_Common_${Engine}_OUTPUT WriteCommon)
+	new_${TestSet}_${Engine}_OUTPUT ALL
+	COMMAND mpirun -n 4 Write${TestSet} ${Engine} ${CMAKE_BINARY_DIR}/TempOutput/Current${TestSet}.${Engine}
+	COMMAND ${CMAKE_COMMAND} -DSOURCE_DIR=${CMAKE_BINARY_DIR}/TempOutput/Current${TestSet}.${Engine} -DARCHIVE_NAME=${CMAKE_BINARY_DIR}/TempOutput/Current${TestSet}.${Engine}.zip -P ${CMAKE_SOURCE_DIR}/create_archive.cmake
+	COMMAND test_file_unique ${CMAKE_BINARY_DIR}/TempOutput/Current${TestSet}.${Engine}.zip ${${TestSet}S}
+	BYPRODUCTS ${CURRENT_BINARY_DIR}/Current${TestSet}.${Engine}.zip)
+    add_dependencies(new_${TestSet}_${Engine}_OUTPUT Write${TestSet})
 endforeach()
+endforeach()  # over testsets
 

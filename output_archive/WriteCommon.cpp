@@ -38,9 +38,9 @@ void CommonWrite()
     adios2::IO io = adios.DeclareIO("TestIO");
 
     std::size_t r64_Nx = Nx;
-    if (mpiRank == 0) 
-	std::cout << "Writing output file " << fname << " with " << mpiSize << " MPI ranks and engine " << engine
-              << std::endl;
+    if (mpiRank == 0)
+        std::cout << "Writing output file " << fname << " with " << mpiSize
+                  << " MPI ranks and engine " << engine << std::endl;
 
     // Declare 1D variables (NumOfProcesses * Nx)
     // The local process' part (start, count) can be defined now or later
@@ -74,18 +74,12 @@ void CommonWrite()
         (void)io.DefineVariable<int32_t>("i32", shape, start, count);
         (void)io.DefineVariable<int64_t>("i64", shape, start, count);
         auto var_r32 = io.DefineVariable<float>("r32", shape, start, count);
-        auto var_r64 =
-            io.DefineVariable<double>("r64", shape, start_r64, count_r64);
-        (void)io.DefineVariable<std::complex<float>>("c32", shape, start,
-                                                     count);
-        (void)io.DefineVariable<std::complex<double>>("c64", shape, start,
-                                                      count);
-        auto var_r64_2d =
-            io.DefineVariable<double>("r64_2d", shape2, start2, count2);
-        auto var_r64_2d_rev =
-            io.DefineVariable<double>("r64_2d_rev", shape3, start3, count3);
-        (void)io.DefineVariable<int64_t>("time", time_shape, time_start,
-                                         time_count);
+        auto var_r64 = io.DefineVariable<double>("r64", shape, start_r64, count_r64);
+        (void)io.DefineVariable<std::complex<float>>("c32", shape, start, count);
+        (void)io.DefineVariable<std::complex<double>>("c64", shape, start, count);
+        auto var_r64_2d = io.DefineVariable<double>("r64_2d", shape2, start2, count2);
+        auto var_r64_2d_rev = io.DefineVariable<double>("r64_2d_rev", shape3, start3, count3);
+        (void)io.DefineVariable<int64_t>("time", time_shape, time_start, time_count);
     }
 
     // Create the Engine
@@ -97,8 +91,7 @@ void CommonWrite()
     for (int step = 0; step < NSteps; ++step)
     {
         // Generate test data for each process uniquely
-        generateCommonTestData((int)step, mpiRank, mpiSize, (int)Nx,
-                               (int)r64_Nx);
+        generateCommonTestData((int)step, mpiRank, mpiSize, (int)Nx, (int)r64_Nx);
 
         engine.BeginStep();
         // Retrieve the variables that previously went out of scope
@@ -121,8 +114,7 @@ void CommonWrite()
         adios2::Box<adios2::Dims> sel_r64({mpiRank * Nx}, {r64_Nx});
         adios2::Box<adios2::Dims> sel2({mpiRank * Nx, 0}, {Nx, 2});
         adios2::Box<adios2::Dims> sel3({0, mpiRank * Nx}, {2, Nx});
-        adios2::Box<adios2::Dims> sel_time(
-            {static_cast<unsigned long>(mpiRank)}, {1});
+        adios2::Box<adios2::Dims> sel_time({static_cast<unsigned long>(mpiRank)}, {1});
         if (ZeroDataVar)
         {
             if (mpiRank == 1)
@@ -148,19 +140,19 @@ void CommonWrite()
         // starting index + count
         const adios2::Mode sync = adios2::Mode::Deferred;
         std::time_t localtime = 0;
-	if (mpiRank == 0)
-	    engine.Put(scalar_r64, data_scalar_R64);
-	engine.Put(var_i8, data_I8.data(), sync);
-	engine.Put(var_i16, data_I16.data(), sync);
-	engine.Put(var_i32, data_I32.data(), sync);
-	engine.Put(var_i64, data_I64.data(), sync);
-	engine.Put(var_r32, data_R32.data(), sync);
-	engine.Put(var_r64, data_R64.data(), sync);
-	engine.Put(var_c32, data_C32.data(), sync);
-	engine.Put(var_c64, data_C64.data(), sync);
-	engine.Put(var_r64_2d, &data_R64_2d[0], sync);
-	engine.Put(var_r64_2d_rev, &data_R64_2d_rev[0], sync);
-	engine.Put(var_time, (int64_t *)&localtime);
+        if (mpiRank == 0)
+            engine.Put(scalar_r64, data_scalar_R64);
+        engine.Put(var_i8, data_I8.data(), sync);
+        engine.Put(var_i16, data_I16.data(), sync);
+        engine.Put(var_i32, data_I32.data(), sync);
+        engine.Put(var_i64, data_I64.data(), sync);
+        engine.Put(var_r32, data_R32.data(), sync);
+        engine.Put(var_r64, data_R64.data(), sync);
+        engine.Put(var_c32, data_C32.data(), sync);
+        engine.Put(var_c64, data_C64.data(), sync);
+        engine.Put(var_r64_2d, &data_R64_2d[0], sync);
+        engine.Put(var_r64_2d_rev, &data_R64_2d_rev[0], sync);
+        engine.Put(var_time, (int64_t *)&localtime);
 
         engine.EndStep();
     }
