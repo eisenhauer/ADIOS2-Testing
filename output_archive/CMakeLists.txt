@@ -3,7 +3,7 @@ if (CMAKE_VERSION VERSION_GREATER_EQUAL "3.24.0")
    cmake_policy(SET CMP0135 NEW)
 endif()
 
-project(adios2-compatibility-testing C CXX Fortran)
+project(adios2-compatibility-testing C CXX)
 
 include(ExternalProject)
 include(CTest)
@@ -19,14 +19,20 @@ else()
   set(common_deps adios2::cxx11)
 endif()
 
-include(FetchContent)
-FetchContent_Declare(
-  googletest
-  URL https://github.com/google/googletest/archive/refs/tags/v1.16.0.zip
-)
-# For Windows: Prevent overriding the parent project's compiler/linker settings
-set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-FetchContent_MakeAvailable(googletest)
+find_package(GTest)
+if( NOT GTest_FOUND )
+  include(FetchContent)
+  FetchContent_Declare(
+    googletest
+    URL https://github.com/google/googletest/archive/refs/tags/v1.16.0.zip
+  )
+  # For Windows: Prevent overriding the parent project's compiler/linker settings
+  set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+ 
+  FetchContent_MakeAvailable(googletest)
+endif()
+
+find_package(MPI)
 
 ADD_EXECUTABLE(test_file_unique test_file_unique.c)
 
@@ -37,9 +43,9 @@ SET(NewFileEngineList bp4 bp5)
 
 
 ADD_EXECUTABLE(ReadCommon ReadCommon.cpp)
-target_link_libraries(ReadCommon adios2::adios2 MPI::MPI_C   GTest::gtest_main)
+target_link_libraries(ReadCommon adios2::adios2 GTest::gtest_main)
 ADD_EXECUTABLE(WriteCommon WriteCommon.cpp)
-target_link_libraries(WriteCommon adios2::adios2 MPI::MPI_C   GTest::gtest_main)
+target_link_libraries(WriteCommon adios2::adios2 MPI::MPI_CXX   GTest::gtest_main)
 #ADD_EXECUTABLE(test_file_unique test_file_unique.c)
 
 FILE(GLOB CommonS ${CMAKE_SOURCE_DIR}/zipped_output/Common*.zip)
