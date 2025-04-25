@@ -31,7 +31,6 @@ int main(int argc, char *argv[])
         fname = std::string(argv[2]);
     }
 
-    /** Application variable */
     std::vector<float> myFloats = {
         0 + 10.0f * rank, 1 + 10.0f * rank, 2 + 10.0f * rank, 3 + 10.0f * rank, 4 + 10.0f * rank,
         5 + 10.0f * rank, 6 + 10.0f * rank, 7 + 10.0f * rank, 8 + 10.0f * rank, 9 + 10.0f * rank};
@@ -44,12 +43,9 @@ int main(int argc, char *argv[])
         if (rank == 0)
             std::cout << "Writing output file " << fname << " with " << size
                       << " MPI ranks and engine " << engine << std::endl;
-        /*** IO class object: settings and factory of Settings: Variables,
-         * Parameters, Transports, and Execution: Engines */
+
         adios2::IO bpIO = adios.DeclareIO("BPFile_N2N");
 
-        /** global array : name, { shape (total) }, { start (local) }, { count
-         * (local) }, all are constant dimensions */
         adios2::Variable<float> bpFloats = bpIO.DefineVariable<float>(
             "bpFloats", {size * Nx}, {rank * Nx}, {Nx}, adios2::ConstantDims);
 
@@ -64,33 +60,11 @@ int main(int argc, char *argv[])
         std::vector<double> myDoubles = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
         bpIO.DefineAttribute<double>("Array_of_Doubles", myDoubles.data(), myDoubles.size());
 
-        /** Engine derived class, spawned to start IO operations */
         adios2::Engine bpWriter = bpIO.Open(fname, adios2::Mode::Write);
 
-        /** Write variable for buffering */
         bpWriter.Put<float>(bpFloats, myFloats.data());
 
-        /** Create bp file, engine becomes unreachable after this*/
         bpWriter.Close();
-
-        adios2::IO bpReader = adios.DeclareIO("BPReader");
-
-        adios2::Engine bpReaderEngine = bpReader.Open("fileAttributes.bp", adios2::Mode::Read);
-
-        const auto attributesInfo = bpReader.AvailableAttributes();
-
-        for (const auto &attributeInfoPair : attributesInfo)
-        {
-            std::cout << "Attribute: " << attributeInfoPair.first;
-            for (const auto &attributePair : attributeInfoPair.second)
-            {
-                std::cout << "\tKey: " << attributePair.first << "\tValue: " << attributePair.second
-                          << "\n";
-            }
-            std::cout << "\n";
-        }
-
-        bpReaderEngine.Close();
     }
     catch (std::invalid_argument &e)
     {
