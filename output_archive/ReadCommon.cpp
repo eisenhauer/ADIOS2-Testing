@@ -30,10 +30,6 @@ public:
 
 typedef std::chrono::duration<double> Seconds;
 
-#if ADIOS2_USE_MPI
-MPI_Comm testComm;
-#endif
-
 // ADIOS2 Common read
 TEST_F(CommonReadTest, ADIOS2CommonRead1D8)
 {
@@ -41,18 +37,8 @@ TEST_F(CommonReadTest, ADIOS2CommonRead1D8)
     // form a mpiSize * Nx 1D array
     int mpiRank = 0, mpiSize = 1;
 
-#if ADIOS2_USE_MPI
-    MPI_Comm_rank(testComm, &mpiRank);
-    MPI_Comm_size(testComm, &mpiSize);
-#endif
-
-    // Write test data using ADIOS2
-
-#if ADIOS2_USE_MPI
-    adios2::ADIOS adios(testComm);
-#else
     adios2::ADIOS adios;
-#endif
+
     adios2::IO io = adios.DeclareIO("TestIO");
 
     // Create the Engine
@@ -199,8 +185,8 @@ TEST_F(CommonReadTest, ADIOS2CommonRead1D8)
             }
         }
 
-        long unsigned int myStart = (long unsigned int)(writerSize * Nx / mpiSize) * mpiRank;
-        long unsigned int myLength = (long unsigned int)((writerSize * Nx + mpiSize - 1) / mpiSize);
+        long unsigned int myStart = 0;
+        long unsigned int myLength = (long unsigned int)(writerSize * Nx);
 
         if (myStart + myLength > writerSize * Nx)
         {
@@ -426,25 +412,7 @@ int main(int argc, char **argv)
     ::testing::InitGoogleTest(&argc, argv);
     ParseArgs(argc, argv);
 
-#if ADIOS2_USE_MPI
-    MPI_Init(&argc, &argv);
-
-    int key;
-    MPI_Comm_rank(MPI_COMM_WORLD, &key);
-
-    const unsigned int color = 2;
-    MPI_Comm_split(MPI_COMM_WORLD, color, key, &testComm);
-#endif
-
     result = RUN_ALL_TESTS();
-
-#if ADIOS2_USE_MPI
-#ifdef CRAY_MPICH_VERSION
-    MPI_Barrier(MPI_COMM_WORLD);
-#else
-    MPI_Finalize();
-#endif
-#endif
 
     return result;
 }
